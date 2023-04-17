@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Todo List</string>
+    <string name="error_empty">Заполните поле заметки!</string>
+</resources>
