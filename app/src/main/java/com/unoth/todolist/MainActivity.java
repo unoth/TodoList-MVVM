@@ -1,4 +1,4 @@
-package com.unoth.todolost;
+package com.unoth.todolist;
 
 import android.content.Intent;
 import android.view.View;
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.unoth.todolost.R;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayout linearLayoutNotes;
     private FloatingActionButton btnAddNote;
-    private ArrayList<Note> notes = new ArrayList<>();
+    private Database database = Database.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +24,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initViews();
 
-        Random random = new Random();
-        for (int i = 0; i < 20; i++) {
-            Note note = new Note(i, "Note " + i, random.nextInt(3));
-            notes.add(note);
-        }
-        showNotes();
         btnAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,13 +33,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showNotes();
+    }
+
     private void initViews() {
         linearLayoutNotes = findViewById(R.id.linearLayoutNotes);
         btnAddNote = findViewById(R.id.btnAddNote);
     }
 
     private void showNotes() {
-        for (Note note : notes) {
+        linearLayoutNotes.removeAllViews();
+        for (Note note : database.getNotes()) {
             View view = getLayoutInflater().inflate(R.layout.note_item, linearLayoutNotes, false);
             TextView textViewNote = view.findViewById(R.id.noteItem);
             textViewNote.setText(note.getText());
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             int color = ContextCompat.getColor(this,colorId);
             textViewNote.setBackgroundColor(color);
             linearLayoutNotes.addView(view);
+
         }
     }
 }

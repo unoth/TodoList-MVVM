@@ -1,4 +1,4 @@
-package com.unoth.todolost;
+package com.unoth.todolist;
 
 public class Note {
     private int id;

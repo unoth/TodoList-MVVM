@@ -1,4 +1,4 @@
-package com.unoth.todolost;
+package com.unoth.todolist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.unoth.todolost.R;
 
 public class AddNoteActivity extends AppCompatActivity {
 
@@ -17,6 +18,7 @@ public class AddNoteActivity extends AppCompatActivity {
     private RadioButton radioLow;
     private RadioButton radioMedium;
     private RadioButton radioHigh;
+    private Database database = Database.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +43,19 @@ public class AddNoteActivity extends AppCompatActivity {
 
     private void saveNewNote() {
         String text = edInput.getText().toString().trim();
-        if (text.isEmpty() ) {
+        if (text.isEmpty()) {
             Toast.makeText(
                     AddNoteActivity.this,
                     getString(R.string.error_empty),
                     Toast.LENGTH_SHORT
             ).show();
-//        }
-//        else {
-//           launchNextScreen(text);
         }
         int priority = getPriority();
+        int id = database.getNotes().size();
+        Note note = new Note(id,text,priority);
+        database.add(note);
+
+        finish();
     }
 
     private int getPriority() {
