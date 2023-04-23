@@ -37,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        notesAdapter.setOnClickListener(new NotesAdapter.onClickListener() {
+            @Override
+            public void onClick(Note note) {
+                database.remove(note.getId());
+                showNotes();
+            }
+        });
     }
 
     @Override
