@@ -2,19 +2,14 @@ package com.unoth.todolist;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.unoth.todolost.R;
-import java.util.ArrayList;
-import java.util.Random;
+
 
 public class MainActivity extends AppCompatActivity {
 

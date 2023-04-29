@@ -9,7 +9,6 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.unoth.todolost.R;
 
 public class AddNoteActivity extends AppCompatActivity {
 

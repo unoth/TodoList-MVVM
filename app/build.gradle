@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.unoth.todolost'
+    namespace 'com.unoth.todolist'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.unoth.todolost"
+        applicationId "com.unoth.todolist"
         minSdk 24
         targetSdk 33
         versionCode 1

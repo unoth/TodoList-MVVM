@@ -1,7 +1,6 @@
 package com.unoth.todolist;
 
 import androidx.room.Dao;
-import androidx.room.Entity;
 import androidx.room.Insert;
 import androidx.room.Query;
 import java.util.ArrayList;
