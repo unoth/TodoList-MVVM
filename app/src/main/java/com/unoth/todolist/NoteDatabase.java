@@ -10,13 +10,13 @@ public abstract class NoteDatabase extends RoomDatabase {
 
     private static NoteDatabase instance = null;
 
-    private static NoteDatabase getInstance(Application application) {
+    public static NoteDatabase getInstance(Application application) {
         if (instance == null) {
             instance = Room.databaseBuilder(
                     application,
                     NoteDatabase.class,
                     "note.bd"
-            ).build();
+            ).allowMainThreadQueries().build();
         }
         return instance;
     }
