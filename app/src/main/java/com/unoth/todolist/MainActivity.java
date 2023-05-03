@@ -1,6 +1,8 @@
 package com.unoth.todolist;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -17,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton btnAddNote;
     private NoteDatabase noteDatabase;
     private NotesAdapter notesAdapter;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +67,20 @@ public class MainActivity extends AppCompatActivity {
                     ) {
                         int position = viewHolder.getAdapterPosition();
                         Note note = notesAdapter.getNotes().get(position);
-                        noteDatabase.notesDao().remove(note.getId());
-                        showNotes();
+
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                noteDatabase.notesDao().remove(note.getId());
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showNotes();
+                                    }
+                                });
+                            }
+                        });
+                        thread.start();
                     }
                 });
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -82,6 +98,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNotes() {
-        notesAdapter.setNotes(noteDatabase.notesDao().getNote());
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Note> notes = noteDatabase.notesDao().getNote();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        notesAdapter.setNotes(notes);
+                    }
+                });
+            }
+        });
+        thread.start();
     }
 }
