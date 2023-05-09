@@ -1,5 +1,6 @@
 package com.unoth.todolist;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,18 +20,18 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private FloatingActionButton btnAddNote;
-    private NoteDatabase noteDatabase;
     private NotesAdapter notesAdapter;
+    private MainViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        noteDatabase = NoteDatabase.getInstance(getApplication());
+        mainViewModel = new MainViewModel(getApplication());
         initViews();
 
         notesAdapter = new NotesAdapter();
-        noteDatabase.notesDao().getNote().observe(this, new Observer<List<Note>>() {
+        mainViewModel.getNotes().observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> notes) {
                 notesAdapter.setNotes(notes);
@@ -73,14 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     ) {
                         int position = viewHolder.getAdapterPosition();
                         Note note = notesAdapter.getNotes().get(position);
-
-                        Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                noteDatabase.notesDao().remove(note.getId());
-                            }
-                        });
-                        thread.start();
+                        mainViewModel.remove(note);
                     }
                 });
         itemTouchHelper.attachToRecyclerView(recyclerView);
