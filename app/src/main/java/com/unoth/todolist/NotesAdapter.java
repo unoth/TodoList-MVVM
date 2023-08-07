@@ -46,13 +46,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         int colorId;
         switch (note.getPriority()) {
             case 0:
-                colorId = android.R.color.holo_green_light;
+                colorId = R.color.green;
                 break;
             case 1:
-                colorId = android.R.color.holo_orange_light;
+                colorId = R.color.orange;
                 break;
             default:
-                colorId = android.R.color.holo_red_light;
+                colorId = R.color.red;
         }
         int color = ContextCompat.getColor(viewHolder.itemView.getContext(), colorId);
         viewHolder.textViewNote.setBackgroundColor(color);
@@ -61,7 +61,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
             @Override
             public void onClick(View v) {
                 if (onClickListener != null) {
-                    onClickListener.onClick(note);
+                    onClickListener.onNoteClick(note);
                 }
             }
         });
@@ -82,6 +82,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     }
 
     interface onClickListener {
-        void onClick(Note note);
+        void onNoteClick(Note note);
     }
 }
