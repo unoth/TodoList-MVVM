@@ -2,8 +2,6 @@ package com.unoth.todolist;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +53,7 @@ public class AddNoteActivity extends AppCompatActivity {
         String text = edInput.getText().toString().trim();
         int priority = getPriority();
         Note note = new Note(text, priority);
-        viewModel.add(note);
+        viewModel.addNote(note);
     }
 
     private int getPriority() {
