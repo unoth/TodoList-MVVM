@@ -10,12 +10,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private NotesDao notesDao;
+    private MutableLiveData<List<Note>> notes = new MutableLiveData<>();
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -23,7 +25,20 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Note>> getNotes() {
-        return notesDao.getNote();
+        return notes;
+    }
+
+    public void refreshList() {
+        Disposable disposable = notesDao.getNote()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Note>>() {
+                    @Override
+                    public void accept(List<Note> notesFromDB) throws Throwable {
+                        notes.setValue(notesFromDB);
+                    }
+                });
+        compositeDisposable.add(disposable);
     }
 
     public void remove(Note note) {
@@ -34,6 +49,7 @@ public class MainViewModel extends AndroidViewModel {
                     @Override
                     public void run() throws Throwable {
                         Log.d("MainViewModel", "Removed " + note.getId() + " OK");
+                        refreshList();
                     }
                 });
         compositeDisposable.add(disposable);

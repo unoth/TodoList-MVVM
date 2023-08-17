@@ -30,13 +30,13 @@ public class AddNoteViewModel extends AndroidViewModel {
 
     public void addNote(Note note) {
         Disposable disposable = notesDao.add(note)
-                .delay(5, TimeUnit.SECONDS)
+                .delay(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action() {
                     @Override
                     public void run() throws Throwable {
-                        Log.d("AddNoteViewModel", "subscribe OK");
+                        Log.d("AddNoteViewModel", "Subscribe OK");
                         shouldCloseScreen.setValue(true);
                     }
                 });
