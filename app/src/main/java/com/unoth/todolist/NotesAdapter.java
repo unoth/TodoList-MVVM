@@ -7,24 +7,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.unoth.todolost.R;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder> {
 
-    private ArrayList<Note> notes = new ArrayList<>();
+    private List<Note> notes = new ArrayList<>();
     private onClickListener onClickListener;
 
     public void setOnClickListener(NotesAdapter.onClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
 
-    public void setNotes(ArrayList<Note> notes) {
+    public List<Note> getNotes() {
+        return new ArrayList<>(notes);
+    }
+
+    public void setNotes(List<Note> notes) {
         this.notes = notes;
         notifyDataSetChanged();
-    }
-    public ArrayList<Note> getNotes() {
-        return new ArrayList<>(notes);
     }
 
     @NonNull
@@ -45,13 +46,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         int colorId;
         switch (note.getPriority()) {
             case 0:
-                colorId = android.R.color.holo_green_light;
+                colorId = R.color.green;
                 break;
             case 1:
-                colorId = android.R.color.holo_orange_light;
+                colorId = R.color.orange;
                 break;
             default:
-                colorId = android.R.color.holo_red_light;
+                colorId = R.color.red;
         }
         int color = ContextCompat.getColor(viewHolder.itemView.getContext(), colorId);
         viewHolder.textViewNote.setBackgroundColor(color);
@@ -60,7 +61,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
             @Override
             public void onClick(View v) {
                 if (onClickListener != null) {
-                    onClickListener.onClick(note);
+                    onClickListener.onNoteClick(note);
                 }
             }
         });
@@ -81,6 +82,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     }
 
     interface onClickListener {
-        void onClick(Note note);
+        void onNoteClick(Note note);
     }
 }

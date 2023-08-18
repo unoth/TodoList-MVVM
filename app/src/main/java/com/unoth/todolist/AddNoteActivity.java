@@ -6,10 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.unoth.todolost.R;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 public class AddNoteActivity extends AppCompatActivity {
 
@@ -17,13 +17,22 @@ public class AddNoteActivity extends AppCompatActivity {
     private Button btnSave;
     private RadioButton radioLow;
     private RadioButton radioMedium;
-    private RadioButton radioHigh;
-    private Database database = Database.getInstance();
+    private AddNoteViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
+        viewModel = new ViewModelProvider(this).get(AddNoteViewModel.class);
+        viewModel.getShouldCloseScreen().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean shouldClose) {
+                if (shouldClose) {
+                    finish();
+                }
+            }
+        });
         initViews();
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,24 +47,13 @@ public class AddNoteActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         radioLow = findViewById(R.id.radioLow);
         radioMedium = findViewById(R.id.radioMedium);
-        radioHigh = findViewById(R.id.radioHigh);
     }
 
     private void saveNewNote() {
         String text = edInput.getText().toString().trim();
-        if (text.isEmpty()) {
-            Toast.makeText(
-                    AddNoteActivity.this,
-                    getString(R.string.error_empty),
-                    Toast.LENGTH_SHORT
-            ).show();
-        }
         int priority = getPriority();
-        int id = database.getNotes().size();
-        Note note = new Note(id,text,priority);
-        database.add(note);
-
-        finish();
+        Note note = new Note(text, priority);
+        viewModel.addNote(note);
     }
 
     private int getPriority() {
