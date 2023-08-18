@@ -29,7 +29,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void refreshList() {
-        Disposable disposable = notesDao.getNote()
+        Disposable disposable = notesDao.getNotes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Note>>() {
