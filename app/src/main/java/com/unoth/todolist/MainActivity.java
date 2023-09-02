@@ -1,11 +1,7 @@
 package com.unoth.todolist;
 
-import android.app.Application;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
