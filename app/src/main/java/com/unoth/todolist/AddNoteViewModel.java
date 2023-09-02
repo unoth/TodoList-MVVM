@@ -11,6 +11,7 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +40,11 @@ public class AddNoteViewModel extends AndroidViewModel {
                     public void run() throws Throwable {
                         Log.d("AddNoteViewModel", "Subscribe OK");
                         shouldCloseScreen.setValue(true);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d("AddNoteViewModel", "Error addNote");
                     }
                 });
         compositeDisposable.add(disposable);

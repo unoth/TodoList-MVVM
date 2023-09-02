@@ -40,6 +40,11 @@ public class MainViewModel extends AndroidViewModel {
                     public void accept(List<Note> notesFromDB) throws Throwable {
                         notes.setValue(notesFromDB);
                     }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d("MainViewModel", "Error refreshList");
+                    }
                 });
         compositeDisposable.add(disposable);
     }
@@ -53,6 +58,11 @@ public class MainViewModel extends AndroidViewModel {
                     public void run() throws Throwable {
                         Log.d("MainViewModel", "Removed " + note.getId() + " OK");
                         refreshList();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d("MainViewModel", "Error remove");
                     }
                 });
         compositeDisposable.add(disposable);
