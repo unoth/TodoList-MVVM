@@ -10,8 +10,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import java.util.concurrent.TimeUnit;
 
 public class AddNoteViewModel extends AndroidViewModel {
 
@@ -30,7 +30,6 @@ public class AddNoteViewModel extends AndroidViewModel {
 
     public void addNote(Note note) {
         Disposable disposable = notesDao.add(note)
-                .delay(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action() {
@@ -38,6 +37,11 @@ public class AddNoteViewModel extends AndroidViewModel {
                     public void run() throws Throwable {
                         Log.d("AddNoteViewModel", "Subscribe OK");
                         shouldCloseScreen.setValue(true);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d("AddNoteViewModel", "Error addNote");
                     }
                 });
         compositeDisposable.add(disposable);

@@ -76,12 +76,6 @@ public class MainActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mainViewModel.refreshList();
-    }
-
     private void initViews() {
         recyclerView = findViewById(R.id.rcNote);
         btnAddNote = findViewById(R.id.btnAddNote);
