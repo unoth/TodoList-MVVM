@@ -46,13 +46,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         int colorId;
         switch (note.getPriority()) {
             case 0:
-                colorId = R.color.green;
+                colorId = R.color.pastel_mint;
                 break;
             case 1:
-                colorId = R.color.orange;
+                colorId = R.color.peach;
                 break;
             default:
-                colorId = R.color.red;
+                colorId = R.color.raspberry;
         }
         int color = ContextCompat.getColor(viewHolder.itemView.getContext(), colorId);
         viewHolder.textViewNote.setBackgroundColor(color);
