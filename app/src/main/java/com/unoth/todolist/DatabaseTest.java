@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class DatabaseTest {
     private ArrayList<Note> notes;
-    Random random = new Random();
+    private Random random = new Random();
 
     @Before
     public void setUp() throws Exception {
