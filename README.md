@@ -1,6 +1,6 @@
 # Todo List
 
-- RecyclerView (swipe to delete)
+- RecyclerView (with Swipe-to-Delete)
 - Room
 - RxJava
 - MVVM architecture
